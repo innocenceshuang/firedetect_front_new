@@ -11,7 +11,7 @@
     <el-table-column fixed="right" label="操作" width="120">
       <template slot-scope="scope">
         <el-button
-          :disabled=messages[scope.$index].dealed
+          :disabled="messages[scope.$index].dealed"
           @click.native.prevent="transformRow(scope.$index, messages)"
           type="text"
           size="small"
@@ -32,38 +32,37 @@ export default {
     return {
       messages: [],
       dialogFormVisible: false,
-      
     };
   },
   methods: {
-    tableRowClassName({row, /*rowIndex*/}) {
-        if (row.dealed === false) {
-          return 'alarm-row';
-        }
-        else{
+    tableRowClassName({ row /*rowIndex*/ }) {
+      if (row.dealed === false) {
+        return "alarm-row";
+      } else {
         // console.log(rowIndex);
-        return 'info-row';
-        }
-      },
-    transformRow(index,rows){
-      axios.put("http://127.0.0.1:8081/fire/message/"+rows[index].id+'/',{
-        id: rows[index].id,
-        dealed: true,
-      }).then(()=>{
-        this.fetchMessages()
-      })
+        return "info-row";
+      }
+    },
+    transformRow(index, rows) {
+      axios
+        .put("http://127.0.0.1:8081/fire/message/" + rows[index].id + "/", {
+          id: rows[index].id,
+          dealed: true,
+        })
+        .then(() => {
+          this.fetchMessages();
+        });
     },
 
     fetchMessages() {
-      axios.get("http://127.0.0.1:8081/fire/message/",{
-
-      }).then((res)=>{
+      axios.get("http://127.0.0.1:8081/fire/message/", {}).then((res) => {
+        console.log(res);
         this.messages = res.data;
-      })
+      });
+    },
   },
-},
-created() {
-    this.fetchMessages()
+  created() {
+    this.fetchMessages();
   },
 };
 </script>

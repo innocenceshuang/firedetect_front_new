@@ -25,10 +25,16 @@
       </el-form-item>
     </el-form>
 
-    <el-table :data="devices" style="width: 100%">
+    <el-table :data="devices" style="width: 100%" >
       <el-table-column label="ID" prop="device_id"> </el-table-column>
       <el-table-column label="Status" prop="status"> </el-table-column>
-      <el-table-column label="Location" prop="location"> </el-table-column>
+      <el-table-column label="Location">
+        <template slot-scope="scope">
+          <el-button @click="openvideo(scope.row)" type="info">
+            {{ scope.row.location }}
+          </el-button>
+        </template>
+      </el-table-column>
       <el-table-column label="Sensitive" prop="sensitive"> </el-table-column>
 
       <el-table-column fixed="right" label="操作" width="120">
@@ -80,6 +86,14 @@ export default {
     };
   },
   methods: {
+    openvideo(row) {
+      console.log(row.device_id);
+      this.$router.push({
+        name: "About",
+        path: "/about",
+        params: { addr: row.video_addr, device_id: row.device_id },
+      });
+    },
     addDevice() {
       this.dialogFormVisible = true;
     },
